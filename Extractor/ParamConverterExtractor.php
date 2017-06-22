@@ -103,6 +103,7 @@ class ParamConverterExtractor implements ExtractorInterface
         $modelContext = $subContext->getParameter('in-model-context', array());
 
         if ($serializationGroups) {
+
             $modelContext['serializer-groups'] = $serializationGroups;
         }
 
@@ -124,6 +125,7 @@ class ParamConverterExtractor implements ExtractorInterface
     private function getDeserializationGroups(ParamConverter $paramConverter)
     {
         $options = $paramConverter->getOptions();
+
         if (isset($options['deserializationContext']['groups'])) {
             return $options['deserializationContext']['groups'];
         }
@@ -154,7 +156,10 @@ class ParamConverterExtractor implements ExtractorInterface
                     return false;
                 }
 
-                return $converter->getConverter() == "fos_rest.request_body";
+                return in_array(
+                    $converter->getConverter(),
+                    ["fos_rest.request_body", "kfz24.commons.json_schema.request_body"]
+                );
             }
         );
 
